@@ -8,6 +8,7 @@ Ansible can be a little complicated to install on a local machine, especially if
 
 Install ansible, awscli and required packages. Ensure you have both Python2 and 3 installed.
 ```
+$ sudo su -
 $ apt-get update
 $ apt-get install -y python python-pip python3-pip ansible 
 
