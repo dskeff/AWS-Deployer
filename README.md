@@ -10,8 +10,9 @@ Install ansible, awscli and required packages. Ensure Python3 is installed.
 ```
 $ sudo apt-get update
 $ sudo apt-get install -y python3-pip ansible 
+$ ln -s /usr/bin/python3 /usr/bin/python
 
-$ python3 -V
+$ python -V
 Python 3.7.3
 
 $ pip3 install awscli boto boto3
