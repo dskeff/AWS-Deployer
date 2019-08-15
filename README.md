@@ -84,10 +84,13 @@ At this point you're ready to run the playbook
 $ ansible-playbook --ask-vault-pass edge2ai.yml
 ```
 
+You should see at the end of the run a list of all IP addresses, which you can distribute among your students.
+
+
 Once finished, stop all instances - make sure you understand playbook `stop_edge2ai.yml` before running it:
 ```
-$ ansible-playbook stop_edge2ai.yml
+$ ansible-playbook --ask-vault-pass stop_edge2ai.yml
 ```
-
+Alternatively, just terminate the instances from the AWS console.
 
 
