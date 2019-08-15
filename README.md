@@ -6,15 +6,19 @@ Here are the instructions to setup Ansible to deploy multiple Edge2AI envs on AW
 
 Ansible can be a little complicated to install on a local machine, especially if you run Windows. Here I just spin up a tiny VM with Ubuntu 19.04 on GCP.
 
-Install ansible, awscli and required pacakges. Note that the VM has Python 3 isntalled already, and ansible runs on Python 3 too.
+Install ansible, awscli and required packages. Ensure you have both Python2 and 3 installed.
 ```
+$ apt-get update
+$ apt-get install -y python python-pip python3-pip ansible 
+
 $ python3 -V
 Python 3.7.3
+$ python -V
+Python 2.7.16
 
-$ apt-get update
-$ apt-get install -y python-pip python3-pip ansible 
 $ pip3 install awscli
 $ pip install boto boto3
+
 $ ansible --version
 ansible 2.7.8
   config file = /etc/ansible/ansible.cfg
@@ -80,6 +84,10 @@ At this point you're ready to run the playbook
 $ ansible-playbook --ask-vault-pass edge2ai.yml
 ```
 
+Once finished, stop all instances - make sure you understand playbook `stop_edge2ai.yml` before running it:
+```
+$ ansible-playbook stop_edge2ai.yml
+```
 
 
 
