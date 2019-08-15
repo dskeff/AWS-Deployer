@@ -98,7 +98,7 @@ $ ansible-playbook --ask-vault-pass edge2ai.yml
 
 You should see at the end of the run a list of all IP addresses, which you can distribute among your students. You also need to include the private key file you created along with it. 
 ```
-PLAY RECAP *************************************************************************************************************************************
+PLAY RECAP ***************************************************************************************
 100.26.242.72              : ok=1    changed=0    unreachable=0    failed=0   
 100.26.145.15              : ok=1    changed=0    unreachable=0    failed=0 
 100.26.212.36              : ok=1    changed=0    unreachable=0    failed=0 
