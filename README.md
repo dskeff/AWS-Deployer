@@ -12,8 +12,9 @@ $ python3 -V
 Python 3.7.3
 
 $ apt-get update
-$ apt-get install -y python3-pip ansible
-$ pip3 install awscli boto3
+$ apt-get install -y python-pip python3-pip ansible 
+$ pip3 install awscli
+$ pip install boto boto3
 $ ansible --version
 ansible 2.7.8
   config file = /etc/ansible/ansible.cfg
@@ -47,40 +48,38 @@ Now you're ready to downlowd this repo:
 ```
 $ git clone https://github.com/fabiog1901/AWS-Deployer.git
 $ cd AWS-Deployer
+```
 
+Update Ansible `hosts` file with a local group. This is required as Ansible always asks for a list of servers to connect to. To create EC2 instances you don't really connect to anything, so we just tell Ansible to connect to localhost...
+```
+echo "[local]" >> /etc/ansible/hosts
+echo "localhost" >> /etc/ansible/hosts
+```
 
+Now check the `edge2ai.yml` file. You might want to update some details values specific to your AWS environment.
 
+Specifically, you want to make sure the AMI ID hasn't changed. Verify that as follows:
 
-
-
-
-
-
-
-
-
-
-
-
-Check the Product Code for CentOS 7 on https://wiki.centos.org/Cloud/AWS
-
-Install aws cli and configure it with your aws access and secret access key
-
-
-Then find the ami using awscli:
-
+1. Check the Product Code for the Centos 7 image on https://wiki.centos.org/Cloud/AWS
+2. Find the latest Centos 7 AMI using awscli:
+```
 $ aws ec2 describe-images \
     --owners 'aws-marketplace' \
+    --region 'us-east-1' \
     --filters 'Name=product-code,Values=aw0evgkw8e5c1q413zgy5pjce' \
     --query 'sort_by(Images, &CreationDate)[-1].[ImageId]' \
     --output 'text'
+ami-02eac2c0129f6376b
+```
+
+Confirm the ami is the same as the ami in the playbook.
 
 
+At this point you're ready to run the playbook
+```
+$ ansible-playbook --ask-vault-pass edge2ai.yml
+```
 
-Confirm the ami you get is the same as the ami in the playbook.
 
-Then use Ansible to create the images
-
-Setup ansible env
 
 
