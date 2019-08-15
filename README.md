@@ -95,7 +95,7 @@ At this point you're ready to run the playbook
 $ ansible-playbook --ask-vault-pass edge2ai.yml
 ```
 
-You should see at the end of the run a list of all IP addresses, which you can distribute among your students, along with the private key to access it. The user is always *centos*.
+You should see at the end of the run a list of all IP addresses, which you can distribute among your students. You also need to include the private key file you created along with it.
 
 
 ### Destroy the instances
