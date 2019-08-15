@@ -1,0 +1,82 @@
+---
+- hosts: local
+  connection: local
+  gather_facts: False
+  vars:
+    type: m5.4xlarge
+    sg: Edge2AI-sg
+    ami: ami-02eac2c0129f6376b
+    keypair: fabio-ghirardello-aws-useast1
+    region: us-east-1
+    count: 1
+    subnet: subnet-08bd151b691b0bb04
+  vars_files:
+    - aws_keys.yml
+    
+  tasks:
+   - name: Launch the new EC2 Instance
+     ec2:
+       aws_access_key: "{{ aws_access_key }}"
+       aws_secret_key: "{{ aws_secret_key }}"
+       group: "{{ sg }}"
+       instance_type: "{{ type }}"
+       image: "{{ ami }}"
+       wait: true 
+       region: "{{ region }}"
+       key_name: "{{ keypair }}"
+       count: "{{count}}"
+       user_data: |
+                  #!/bin/bash
+                  cd ~
+                  yum install -y git
+                  git clone https://github.com/fabiog1901/OneNodeCDHCluster.git
+                  cd OneNodeCDHCluster
+                  chmod +x setup.sh
+                  ./setup.sh aws templates/cdsw_template.json /dev/nvme1n1
+       assign_public_ip: yes
+       vpc_subnet_id: "{{ subnet }}"
+       volumes:
+       - device_name: /dev/sda1
+         volume_size: 100
+         delete_on_termination: true
+       - device_name: /dev/sdb
+         volume_type: gp2
+         volume_size: 1000
+         delete_on_termination: true
+       monitoring: no
+     register: ec2
+     
+   - name: Add the newly created host
+     add_host:
+       name: "{{ item.public_ip }}"
+       groups: edge2ai
+     with_items: "{{ ec2.instances }}"
+     
+   - name: Add tag to Instance(s)
+     ec2_tag:
+       aws_access_key: "{{ aws_access_key }}"
+       aws_secret_key: "{{ aws_secret_key }}"
+       resource: "{{ item.id }}" 
+       region: "{{ region }}" 
+       state: "present"
+     args:
+       tags:
+         owner: fabio.ghirardello
+         enddate: 08/31/2019
+         project: Edge2AI-workshop
+         Name: Fabio-Edge2AI
+     with_items: "{{ ec2.instances }}"
+     
+   - name: Wait for SSH to come up
+     wait_for:
+       host: "{{ item.public_ip }}"
+       port: 22 
+       delay: 20
+       timeout: 180
+       state: started 
+     with_items: "{{ ec2.instances }}"
+
+- hosts: edge2ai
+  tasks:
+    - ping:
+
