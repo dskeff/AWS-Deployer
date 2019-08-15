@@ -6,19 +6,16 @@ Here are the instructions to setup Ansible to deploy multiple Edge2AI envs on AW
 
 Ansible can be a little complicated to install on a local machine, especially if you run Windows. Here I just spin up a tiny VM with Ubuntu 19.04 on GCP.
 
-Install ansible, awscli and required packages. Ensure you have both Python2 and 3 installed.
+Install ansible, awscli and required packages. Ensure Python3 is installed.
 ```
-$ sudo su -
-$ apt-get update
-$ apt-get install -y python python-pip python3-pip ansible 
+$ alias please="sudo"
+$ please apt-get update
+$ please apt-get install -y python3-pip ansible 
 
 $ python3 -V
 Python 3.7.3
-$ python -V
-Python 2.7.16
 
-$ pip3 install awscli
-$ pip install boto boto3
+$ pip3 install awscli boto boto3
 
 $ ansible --version
 ansible 2.7.8
@@ -27,6 +24,11 @@ ansible 2.7.8
   ansible python module location = /usr/lib/python3/dist-packages/ansible
   executable location = /usr/bin/ansible
   python version = 3.7.3 (default, Apr  3 2019, 05:39:12) [GCC 8.3.0]
+```
+
+At this point, on my VM I need to logout and log back in, but you should be able to reload the PATH by doing
+```
+. ~/.profile
 ```
 
 Configure AWS CLI with the access and secred access keys
@@ -40,7 +42,7 @@ Default output format [None]:
 
 Create an Ansible Vault to secure your AWS keys for Ansible usage. 
 ```
-$ ansible-vault ansible-vault-for-aws-keys.yml
+$ ansible-vault create ansible-vault-for-aws-keys.yml
 ```
 
 Enter the password for the vault, then insert these 2 lines and save.
@@ -49,6 +51,8 @@ aws_access_key: xxxx
 aws_secret_key: xxxxx
 ```
 
+## Use
+
 Now you're ready to downlowd this repo:
 ```
 $ git clone https://github.com/fabiog1901/AWS-Deployer.git
@@ -56,29 +60,35 @@ $ cd AWS-Deployer
 ```
 
 Update Ansible `hosts` file with a local group. This is required as Ansible always asks for a list of servers to connect to. To create EC2 instances you don't really connect to anything, so we just tell Ansible to connect to localhost...
+Edit the file using vi/nano and add these 2 lines:
 ```
-echo "[local]" >> /etc/ansible/hosts
-echo "localhost" >> /etc/ansible/hosts
-```
-
-Now check the `edge2ai.yml` file. You might want to update some details values specific to your AWS environment.
-
-Specifically, you want to make sure the AMI ID hasn't changed. Verify that as follows:
-
-1. Check the Product Code for the Centos 7 image on https://wiki.centos.org/Cloud/AWS
-2. Find the latest Centos 7 AMI using awscli:
-```
-$ aws ec2 describe-images \
-    --owners 'aws-marketplace' \
-    --region 'us-east-1' \
-    --filters 'Name=product-code,Values=aw0evgkw8e5c1q413zgy5pjce' \
-    --query 'sort_by(Images, &CreationDate)[-1].[ImageId]' \
-    --output 'text'
-ami-02eac2c0129f6376b
+[local]
+localhost
 ```
 
-Confirm the ami is the same as the ami in the playbook.
+### Review Ansible Playbook
+Now check the `edge2ai.yml` file, specifically the `vars` section at the top. You might want to update some details values specific to your AWS environment.
 
+1. **ami** - Make sure the AMI ID hasn't changed. Verify that as follows:
+    - Check the Product Code for the Centos 7 image on https://wiki.centos.org/Cloud/AWS
+    - Find the latest Centos 7 AMI using awscli:
+      ```
+      $ aws ec2 describe-images \
+          --owners 'aws-marketplace' \
+          --region 'us-east-1' \
+          --filters 'Name=product-code,Values=aw0evgkw8e5c1q413zgy5pjce' \
+          --query 'sort_by(Images, &CreationDate)[-1].[ImageId]' \
+          --output 'text'
+      ami-02eac2c0129f6376b
+      ```
+    - Confirm the ami is the same as the ami in the playbook. If not, update with new ami id.
+
+2. **sg** - Security group, ensure you use a security group that is valid for your region.
+3. **keypair** - You might want to create a new key for the workshop as you'll have to share the private key with all the students.
+4. **region** - easy..
+5. **count**: - self explanatory..
+6  **subnet** - again, ensure the subnet is valid in your region
+7. **onwer, enddate, project** - ensure you set the Tags, specifically ensure the **project** tag is unique (eg: <yourname>-<date>-edge2ai) as you will search for that tag when it's time to delete the instances, and you don't want to delete someone else's instances!
 
 At this point you're ready to run the playbook
 ```
