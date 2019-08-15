@@ -88,7 +88,7 @@ Now check the `edge2ai.yml` file, specifically the `vars` section at the top. Yo
 4. **region** - easy..
 5. **count**: - self explanatory..
 6.  **subnet** - again, ensure the subnet is valid in your region
-7. **onwer, enddate, project** - ensure you set the Tags, specifically ensure the **project** tag is unique (eg: yourname-todaysdate-edge2ai) as you will search for that tag when it's time to delete the instances, and you don't want to delete someone else's instances!
+7. **onwer, enddate, project** - ensure you set the Tags, specifically ensure the **project** tag is unique (eg: *yourname-todaysdate-edge2ai*) as you will search for that tag when it's time to delete the instances, and you don't want to delete someone else's instances!
 
 At this point you're ready to run the playbook
 ```
@@ -98,7 +98,7 @@ $ ansible-playbook --ask-vault-pass edge2ai.yml
 You should see at the end of the run a list of all IP addresses, which you can distribute among your students.
 
 
-Once finished, stop all instances - make sure you understand playbook `stop_edge2ai.yml` before running it:
+Once finished, stop all instances - make sure you update the value of `tag:project` in file `stop_edge2ai.yml` with your tag before running it:
 ```
 $ ansible-playbook --ask-vault-pass stop_edge2ai.yml
 ```
