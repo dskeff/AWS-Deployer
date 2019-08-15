@@ -67,10 +67,10 @@ localhost
 ```
 
 ### Review Ansible Playbook
-Now check the `edge2ai.yml` file, specifically the `vars` section at the top. You might want to update some details values specific to your AWS environment.
+Now check the `edge2ai.yml` file, particularly the `vars` section at the top. You might want to update some details values specific to your AWS environment.
 
 1. **ami** - Make sure the AMI ID hasn't changed. Verify that as follows:
-    - Check the Product Code for the Centos 7 image on https://wiki.centos.org/Cloud/AWS
+    - Check the Product Code for the Centos 7 image at https://wiki.centos.org/Cloud/AWS
     - Find the latest Centos 7 AMI using awscli:
       ```
       $ aws ec2 describe-images \
