@@ -87,7 +87,7 @@ Now check the `edge2ai.yml` file, specifically the `vars` section at the top. Yo
 3. **keypair** - You might want to create a new key for the workshop as you'll have to share the private key with all the students.
 4. **region** - easy..
 5. **count**: - self explanatory..
-6  **subnet** - again, ensure the subnet is valid in your region
+6.  **subnet** - again, ensure the subnet is valid in your region
 7. **onwer, enddate, project** - ensure you set the Tags, specifically ensure the **project** tag is unique (eg: <yourname>-<date>-edge2ai) as you will search for that tag when it's time to delete the instances, and you don't want to delete someone else's instances!
 
 At this point you're ready to run the playbook
