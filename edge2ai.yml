@@ -11,7 +11,7 @@
     count: 1
     subnet: subnet-08bd151b691b0bb04
   vars_files:
-    - aws_keys.yml
+    - ../ansible-vault-for-aws-keys.yml
     
   tasks:
    - name: Launch the new EC2 Instance
