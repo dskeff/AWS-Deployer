@@ -14,7 +14,7 @@
     enddate: 08/31/2019
     project: Edge2AI-workshop-2019-08-30
   vars_files:
-    - ../ansible-vault-for-aws-keys.yml
+    - ../aws-keys.vault
     
   tasks:
    - name: Launch the new EC2 Instance
