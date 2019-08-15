@@ -42,7 +42,7 @@ Default output format [None]:
 
 Create an Ansible Vault to secure your AWS keys for Ansible usage. 
 ```
-$ ansible-vault create ansible-vault-for-aws-keys.yml
+$ ansible-vault create aws-keys.vault
 ```
 
 Enter the password for the vault, then insert these 2 lines and save.
