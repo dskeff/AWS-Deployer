@@ -3,7 +3,7 @@
   vars:
     region: us-east-1
   vars_files:
-    - aws_keys.yml
+    - ../ansible-vault-for-aws-keys.yml
   tasks:
     - name: Gather EC2 facts
       ec2_instance_facts:
