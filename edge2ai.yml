@@ -10,6 +10,9 @@
     region: us-east-1
     count: 1
     subnet: subnet-08bd151b691b0bb04
+    onwer: fabio.ghirardello
+    enddate: 08/31/2019
+    project: Edge2AI-workshop-2019-08-30
   vars_files:
     - ../ansible-vault-for-aws-keys.yml
     
@@ -61,10 +64,10 @@
        state: "present"
      args:
        tags:
-         owner: fabio.ghirardello
-         enddate: 08/31/2019
-         project: Edge2AI-workshop
-         Name: Fabio-Edge2AI
+         owner: "{{ owner }}" 
+         enddate: "{{ enddate }}" 
+         project: "{{ project }}" 
+         Name: Edge2AI
      with_items: "{{ ec2.instances }}"
      
    - name: Wait for SSH to come up
