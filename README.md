@@ -70,8 +70,8 @@ localhost
 Now check the `edge2ai.yml` file, particularly the `vars` section at the top. You might want to update some values specific for your AWS environment.
 
 1. **ami** - Make sure the AMI ID hasn't changed. Verify that as follows:
-    - Check the Product Code for the Centos 7 image at https://wiki.centos.org/Cloud/AWS
-    - Find the latest Centos 7 AMI using awscli:
+    - Check the Product Code for the Centos 7 image at https://wiki.centos.org/Cloud/AWS. Currently, it's `aw0evgkw8e5c1q413zgy5pjce`.
+    - Use that Product Code to find the latest Centos 7 AMI using awscli:
       ```
       $ aws ec2 describe-images \
           --owners 'aws-marketplace' \
