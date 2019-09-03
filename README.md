@@ -59,7 +59,7 @@ $ git clone https://github.com/fabiog1901/AWS-Deployer.git
 $ cd AWS-Deployer
 ```
 
-Update Ansible `hosts` file with a local group. This is required as Ansible always asks for a list of servers to connect to. To create EC2 instances you don't really connect to anything, so we just tell Ansible to connect to localhost...
+Update Ansible `/etc/ansible/hosts` file with a local group. This is required as Ansible always asks for a list of servers to connect to. To create EC2 instances you don't really connect to anything, so we just tell Ansible to connect to localhost...
 Edit the file using vi/nano and add these 2 lines:
 ```
 [local]
